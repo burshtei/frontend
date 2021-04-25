@@ -1,0 +1,10 @@
+{
+  "items": "מוצרים",
+  "item": "פריט",
+  "barCode": "בר קוד",
+  "transactions": "פעולות",
+  "date": "תאריך",
+  "new_transaction": "דווח חדש",
+  "update_transaction": "עדכון דיווח",
+  "inventory": "מחסן"
+}
