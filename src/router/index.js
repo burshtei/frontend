@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Actions from "@/components/Actions";
+import Inventory from "@/components/Inventory";
 
 Vue.use(VueRouter);
 
@@ -9,6 +11,16 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/actions",
+    name: "Actions",
+    component: Actions,
+  },
+  {
+    path: "/inventory",
+    name: "Inventory",
+    component: Inventory,
   },
   {
     path: "/about",
