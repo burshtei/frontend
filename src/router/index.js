@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Actions from "@/components/Actions";
 import Inventory from "@/components/Inventory";
+import ExportImport from "@/components/ExportImport";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/inventory",
     name: "Inventory",
     component: Inventory,
+  },
+  {
+    path: "/exportImport",
+    name: "ExportImport",
+    component: ExportImport,
   },
   {
     path: "/about",

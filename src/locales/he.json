@@ -6,5 +6,11 @@
   "date": "תאריך",
   "new_transaction": "דווח חדש",
   "update_transaction": "עדכון דיווח",
-  "inventory": "מחסן"
+  "inventory": "מחסן",
+  "kehat": "קהת",
+  "chish": "חיש",
+  "history": "היסטוריה",
+  "actions": "פעולות",
+  "insert_stock": "הכנסת סחורה",
+  "export_stock": "הוצאת סחורה"
 }
