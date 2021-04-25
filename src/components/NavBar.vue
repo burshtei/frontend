@@ -5,7 +5,7 @@
       <div class="d-flex align-center">
         <v-img
           alt="Kehat Logo"
-          class="shrink mr-2"
+          class="shrink mr-3"
           src="../assets/kehat_logo.jpg"
           transition="scale-transition"
           width="30"
