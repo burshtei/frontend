@@ -13,5 +13,6 @@
   "actions": "פעולות",
   "insert_stock": "הכנסת סחורה",
   "export_stock": "הוצאת סחורה",
-  "amount": "כמות"
+  "amount": "כמות",
+  "name": "שם"
 }

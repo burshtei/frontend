@@ -57,15 +57,15 @@
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="headline"
-            >Are you sure you want to delete this item?
+              >Are you sure you want to delete this item?
             </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete"
-              >Cancel
+                >Cancel
               </v-btn>
               <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-              >OK
+                >OK
               </v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -83,114 +83,116 @@
   </v-data-table>
 </template>
 <script>
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   data: () => ({
-    backendUrl: 'https://kehat-backend.herokuapp.com',
+    backendUrl: process.env.VUE_APP_BACKEND_API,
     dialog: false,
     dialogDelete: false,
     headers: [
-      { text: 'בר קוד', value: 'barCode' },
-      { text: 'שם / תיאור', value: 'name' },
-      { text: 'כמות', value: 'amount' },
-      { text: 'פעולות', value: 'actions', sortable: false }
+      { text: "בר קוד", value: "barCode" },
+      { text: "שם / תיאור", value: "name" },
+      { text: "כמות", value: "amount" },
+      { text: "פעולות", value: "actions", sortable: false },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
-      barCode: '',
-      name: ''
+      barCode: "",
+      name: "",
     },
     defaultItem: {
-      id: '',
-      barCode: '',
-      name: ''
-    }
+      id: "",
+      barCode: "",
+      name: "",
+    },
   }),
 
   computed: {
-    formTitle () {
-      return this.editedIndex === -1 ? 'פריט חדש' : 'עידכון פריט'
-    }
+    formTitle() {
+      return this.editedIndex === -1 ? "פריט חדש" : "עידכון פריט";
+    },
   },
 
   watch: {
-    dialog (val) {
-      val || this.close()
+    dialog(val) {
+      val || this.close();
     },
-    dialogDelete (val) {
-      val || this.closeDelete()
-    }
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
   },
 
-  mounted () {
+  mounted() {
     axios
-      .get(this.backendUrl + '/books')
+      .get(this.backendUrl + "/books")
       .then((response) => (this.items = response.data))
-      .catch((reason) => console.log(reason))
+      .catch((reason) => console.log(reason));
   },
   methods: {
-    initialize () {
-      this.items = []
+    initialize() {
+      this.items = [];
     },
-    editItem (item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-
-    deleteItem (item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
+    editItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
 
-    deleteItemConfirm () {
-      console.log('deleteItemConfirm: ' + this.editedItem.id)
-      this.items.splice(this.editedIndex, 1)
-      this.closeDelete()
+    deleteItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
     },
 
-    close () {
-      this.dialog = false
-      console.log('close: ' + this.editedItem.id)
+    deleteItemConfirm() {
+      console.log("deleteItemConfirm: " + this.editedItem.id);
+      this.items.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      console.log("close: " + this.editedItem.id);
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
 
-    closeDelete () {
-      this.dialogDelete = false
-      console.log('closeDelete: ' + this.backendUrl + '/books/' + this.editedItem.id)
+    closeDelete() {
+      this.dialogDelete = false;
+      console.log(
+        "closeDelete: " + this.backendUrl + "/books/" + this.editedItem.id
+      );
       this.$nextTick(() => {
         axios
-          .delete(this.backendUrl + '/books/' + this.editedItem.id)
+          .delete(this.backendUrl + "/books/" + this.editedItem.id)
           .then((this.editedItem = Object.assign({}, this.defaultItem)))
           .then((this.editedIndex = -1))
-          .catch((reason) => console.log(reason))
-      })
+          .catch((reason) => console.log(reason));
+      });
     },
 
-    save () {
+    save() {
       if (this.editedIndex > -1) {
         axios
           .put(
-            this.backendUrl + '/books/' + this.editedItem.id,
+            this.backendUrl + "/books/" + this.editedItem.id,
             this.editedItem
           )
           // .then((response)return => )
-          .catch((reason) => console.log(reason))
-        Object.assign(this.items[this.editedIndex], this.editedItem)
+          .catch((reason) => console.log(reason));
+        Object.assign(this.items[this.editedIndex], this.editedItem);
       } else {
         axios
-          .post(this.backendUrl + '/books', this.editedItem)
+          .post(this.backendUrl + "/books", this.editedItem)
           .then((response) => this.items.push(response.data))
-          .catch((reason) => console.log(reason))
+          .catch((reason) => console.log(reason));
       }
-      this.close()
-    }
-  }
-}
+      this.close();
+    },
+  },
+};
 </script>

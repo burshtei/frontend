@@ -4,7 +4,6 @@
       dense
       :headers="headers"
       :items="actions"
-      :search="search"
       class="elevation-1"
       mobile-breakpoint="0"
     >
@@ -31,7 +30,7 @@ import * as moment from "moment";
 
 export default {
   data: () => ({
-    backendUrl: "https://kehat-backend.herokuapp.com",
+    backendUrl: process.env.VUE_APP_BACKEND_API,
     dialog: false,
     dialogDelete: false,
     headers: [
