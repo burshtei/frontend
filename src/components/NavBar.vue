@@ -27,8 +27,14 @@
 
     <v-navigation-drawer app right v-model="drawer" hide-overlay>
       <v-list>
-        <v-list-item>
+        <v-list-item href="/inventory">
           <v-list-item-title>{{ $t("inventory") }}</v-list-item-title>
+        </v-list-item>
+        <v-list-item href="/actions">
+          <v-list-item-title>{{ $t("history") }}</v-list-item-title>
+        </v-list-item>
+        <v-list-item href="/exportImport">
+          <v-list-item-title>{{ $t("actions") }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

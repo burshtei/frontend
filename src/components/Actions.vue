@@ -1,6 +1,7 @@
 <template>
   <v-card>
   <v-data-table
+    dense
     :headers="headers"
     :items="actions"
     :search="search"
@@ -14,6 +15,9 @@
         :color="getColor(item.amount)">
         {{signedNumber(item.amount)}}
       </v-chip>
+    </template>
+    <template v-slot:item.target="{ item }">
+      {{ targetDisplay(item.target)}}
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset</v-btn>
@@ -56,6 +60,10 @@ export default {
     },
     signedNumber: function (amount) {
       return amount
+    },
+
+    targetDisplay: function (target) {
+      return this.$t(target)
     },
     close () {
       this.dialog = false
