@@ -26,17 +26,25 @@
     </v-app-bar>
 
     <v-navigation-drawer app right v-model="drawer" hide-overlay>
-      <v-list>
-        <v-list-item href="/inventory">
-          <v-list-item-title>{{ $t("inventory") }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item href="/actions">
-          <v-list-item-title>{{ $t("history") }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item href="/exportImport">
-          <v-list-item-title>{{ $t("actions") }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
+      <v-card class="mx-auto" max-width="300" tile>
+        <v-list>
+          <v-list-item
+            v-for="link in links"
+            :key="link.text"
+            router
+            :to="link.route"
+          >
+            <v-list-item-action>
+              <v-icon >{{ link.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title >
+                  {{$t(link.text)}}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
     </v-navigation-drawer>
   </nav>
 </template>
@@ -46,6 +54,15 @@ export default {
   data() {
     return {
       drawer: false,
+      links: [
+        { icon: "home", text: "inventory", route: "/inventory" },
+        { icon: "history", text: "history", route: "/actions" },
+        {
+          icon: "swap_horizontal_circle",
+          text: "actions",
+          route: "/exportImport",
+        },
+      ],
     };
   },
 };
