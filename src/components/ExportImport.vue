@@ -102,7 +102,7 @@ export default {
     action: {
       amount: null,
       barCode: "",
-      user: "m",
+      user: "בודק",
       target: "",
       book: {
         name: "",
