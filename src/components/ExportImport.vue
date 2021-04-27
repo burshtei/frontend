@@ -100,10 +100,10 @@ export default {
     dialog: false,
     targetEnum: ["kehat", "chish"],
     action: {
-      amount: null,
+      amount: 0,
       barCode: "",
       user: "בודק",
-      target: "",
+      target: null,
       book: {
         name: "",
         id: null,
@@ -133,7 +133,7 @@ export default {
         this.action.amount = -this.action.amount;
       }
       if (this.action.book.id != null) {
-        this.action.book.amount += this.action.amount
+        this.action.book.amount += parseInt(this.action.amount);
         console.log("actiuon: ", this.action);
         axios
           .post(this.backendUrl + "/actions", this.action)
