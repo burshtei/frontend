@@ -107,7 +107,7 @@ export default {
       book: {
         name: "",
         id: null,
-        amount: null
+        amount: 0,
       },
     },
   }),
