@@ -103,7 +103,7 @@ export default {
       name: "",
     },
     defaultItem: {
-      id: "",
+      id: null,
       barCode: "",
       name: "",
     },
