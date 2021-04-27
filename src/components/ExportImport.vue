@@ -3,7 +3,7 @@
     <v-container class="ma-1">
       <v-card>
         <v-row justify="center" align-content="center">
-          <v-dialog v-model="dialog" persistent max-width="600px">
+          <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
               <v-row>
                 <v-col>
@@ -13,6 +13,7 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
+                    @click="openDialog(true)"
                   >
                     {{ $t("insert_stock") }}
                     <v-icon>mdi-import</v-icon>
@@ -25,6 +26,7 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
+                    @click="openDialog(false)"
                   >
                     {{ $t("export_stock") }}
                     <v-icon>mdi-export</v-icon>
@@ -41,9 +43,10 @@
                   <v-row>
                     <v-col cols="12" sm="2" md="4">
                       <v-text-field
+                        v-model="action.barCode"
                         :label="$t('barCode')"
                         required
-                        @change="barCodeUpdated($event, isInsert)"
+                        @change="barCodeUpdated($event)"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="4">
@@ -51,21 +54,22 @@
                         :label="$t('name')"
                         required
                         disabled
-                        v-bind:value="book.name"
+                        v-bind:value="action.book.name"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="2">
                       <v-text-field
+                        v-model="action.amount"
                         :label="$t('amount')"
                         required
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="2">
-                      <v-radio-group>
+                      <v-radio-group v-model="action.target">
                         <v-radio
                           v-for="tr in targetEnum"
                           :key="tr"
-                          :label="$t(`${tr.toLowerCase()}`)"
+                          :label="$t(`${tr}`)"
                           :value="tr"
                         ></v-radio>
                       </v-radio-group>
@@ -75,12 +79,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn @click="dialog = false">
-                  {{ $t("ok") }}
-                </v-btn>
-                <v-btn @click="dialog = false">
-                  {{ $t("cancel") }}
-                </v-btn>
+                <v-btn color="blue darken-1" text @click="close"> Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="save"> Save</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -98,19 +98,49 @@ export default {
     backendUrl: process.env.VUE_APP_BACKEND_API,
     isInsert: true,
     dialog: false,
-    targetEnum: ["KEHAT", "CHISH"],
-    book: {},
+    targetEnum: ["kehat", "chish"],
+    action: {
+      amount: null,
+      barCode: "",
+      user: "m",
+      target: "",
+      book: {
+        name: "",
+        id: null,
+        amount: null
+      },
+    },
   }),
   methods: {
-    barCodeUpdated(event, isInsert) {
-      console.log(isInsert);
-      console.log(this.backendUrl + "/books/query?barCode=" + event);
-      console.log(this.book);
+    openDialog(isInsert) {
+      this.isInsert = isInsert;
+      this.dialog = true;
+    },
+    barCodeUpdated(event) {
       axios
         .get(this.backendUrl + "/books/query?barCode=" + event)
-        .then((value) => (this.book = value.data))
-        .catch(console.log(this.book));
-      console.log(this.book);
+        .then((value) => (this.action.book = value.data))
+        .catch((reason) => console.log(reason));
+    },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.action = Object.assign({}, this.action);
+      });
+    },
+    save() {
+      if (this.isInsert === false) {
+        this.action.amount = -this.action.amount;
+      }
+      if (this.action.book.id != null) {
+        this.action.book.amount += this.action.amount
+        console.log("actiuon: ", this.action);
+        axios
+          .post(this.backendUrl + "/actions", this.action)
+          // .then((response)return => )
+          .catch((reason) => console.log(reason));
+      }
+      this.close();
     },
   },
 };
