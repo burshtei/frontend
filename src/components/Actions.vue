@@ -1,5 +1,15 @@
 <template>
   <v-card>
+    <v-container>
+      <v-card>
+        <v-btn right small
+          ><download-excel :data="actions" :fields="json_fields">
+            <v-icon>mdi-download</v-icon>
+            ייצוא
+          </download-excel></v-btn
+        >
+      </v-card>
+    </v-container>
     <v-data-table
       dense
       :headers="headers"
@@ -25,7 +35,12 @@
   </v-card>
 </template>
 <script>
+import Vue from "vue";
 import axios from "axios";
+import JsonExcel from "vue-json-excel";
+
+Vue.component("downloadExcel", JsonExcel);
+
 import * as moment from "moment";
 
 export default {
@@ -41,13 +56,34 @@ export default {
       { text: "כמות", value: "amount" },
       { text: "מטרה", value: "target" },
     ],
+    all_actions: [],
     actions: [],
+    json_fields: {
+      תאריך: {
+        field: "date",
+        callback: (value) => {
+          return moment(value).format("DD/MM/YYYY");
+        },
+      },
+      ברקוד: "book.barCode",
+      שם: "book.name",
+      כמות: "amount",
+      מטרה: {
+        field: "target",
+        callback: (value) => {
+          if (value === "chish") return "חיש";
+          if (value === "kehat") return "קהת";
+        },
+      },
+    },
   }),
-
   mounted() {
     axios
       .get(this.backendUrl + "/actions")
-      .then((response) => (this.actions = response.data))
+      .then((response) => {
+        this.all_actions = response.data;
+        this.actions = this.all_actions;
+      })
       .catch((reason) => console.log(reason));
   },
   methods: {
