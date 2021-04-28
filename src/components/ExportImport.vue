@@ -99,6 +99,11 @@ export default {
     isInsert: true,
     dialog: false,
     targetEnum: ["kehat", "chish"],
+    emptyBook: {
+      name: "",
+      id: null,
+      amount: 0,
+    },
     action: {
       amount: 0,
       barCode: "",
@@ -120,7 +125,10 @@ export default {
       axios
         .get(this.backendUrl + "/books/query?barCode=" + event)
         .then((value) => (this.action.book = value.data))
-        .catch((reason) => console.log(reason));
+        .catch((reason) => {
+          (this.action.book = this.emptyBook);
+          console.log(reason);
+        });
     },
     close() {
       this.dialog = false;
@@ -134,7 +142,6 @@ export default {
       }
       if (this.action.book.id != null) {
         this.action.book.amount += parseInt(this.action.amount);
-        console.log("actiuon: ", this.action);
         axios
           .post(this.backendUrl + "/actions", this.action)
           // .then((response)return => )
