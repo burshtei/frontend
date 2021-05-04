@@ -7,6 +7,7 @@ import i18n from "@/plugins/i18n"; // path to vuetify export
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 new Vue({
   router,
