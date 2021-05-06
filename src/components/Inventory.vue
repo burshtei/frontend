@@ -115,14 +115,14 @@ export default {
     },
   },
 
-  watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
-  },
+  // watch: {
+  //   dialog(val) {
+  //     val || this.close();
+  //   },
+  //   dialogDelete(val) {
+  //     val || this.closeDelete();
+  //   },
+  // },
 
   mounted() {
     axios
