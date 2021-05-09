@@ -11,9 +11,9 @@
         <v-toolbar-title>{{ $t("items") }}</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="800px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn color="primary" dark v-bind="attrs" v-on="on">
               פריט חדש
             </v-btn>
           </template>
@@ -23,24 +23,30 @@
             </v-card-title>
 
             <v-card-text>
-              <v-container>
+              <v-container fluid>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="3">
                     <v-text-field
                       v-model="editedItem.barCode"
                       label="בר קוד"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="6">
+                  <v-col cols="4">
                     <v-text-field
                       v-model="editedItem.name"
                       label="שם"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="2">
+                  <v-col cols="2">
                     <v-text-field
                       v-model="editedItem.amount"
                       label="כמות"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3">
+                    <v-text-field
+                      v-model="editedItem.packageSize"
+                      label="פריטים בחבילה"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -76,6 +82,9 @@
     <template v-slot:item.actions="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete</v-icon>
+    </template>
+    <template v-slot:item.amount="{ item }">
+      {{ displayByPackage(item) }}
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset</v-btn>
@@ -192,6 +201,28 @@ export default {
           .catch((reason) => console.log(reason));
       }
       this.close();
+    },
+    displayByPackage: function (book) {
+      let retValue = book.amount;
+      if (book.packageSize > 0 && book.amount > book.packageSize) {
+        let reminder = book.amount % book.packageSize;
+        let packeges = Math.floor(book.amount / book.packageSize);
+        if (packeges > 0) {
+          retValue =
+            "(" +
+            packeges +
+            " " +
+            this.$t("packages") +
+            " * " +
+            book.packageSize +
+            " )";
+        }
+        if (reminder > 0) {
+          retValue += " + " + reminder;
+        }
+        retValue += " = " + book.amount;
+      }
+      return retValue;
     },
   },
 };

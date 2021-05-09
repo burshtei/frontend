@@ -14,5 +14,6 @@
   "insert_stock": "הכנסת סחורה",
   "export_stock": "הוצאת סחורה",
   "amount": "כמות",
-  "name": "שם"
+  "name": "שם",
+  "packages": "חבילות"
 }
