@@ -19,8 +19,8 @@
       </div>
       <span class="mr-2">המחסן של קה"ת - בראשות הרב מנחם בכר</span>
       <v-spacer></v-spacer>
-      <v-btn color="grey">
-        התנתק
+      <v-btn color="grey" @click="singedOut">
+        {{ $t("signed_out") }}
         <v-icon>exit_to_app</v-icon>
       </v-btn>
     </v-app-bar>
@@ -35,11 +35,11 @@
             :to="link.route"
           >
             <v-list-item-action>
-              <v-icon >{{ link.icon }}</v-icon>
+              <v-icon>{{ link.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title >
-                  {{$t(link.text)}}
+              <v-list-item-title>
+                {{ $t(link.text) }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import router from "@/router";
+
 export default {
   data() {
     return {
@@ -64,6 +66,13 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    async singedOut() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      await router.push("/login");
+    },
   },
 };
 </script>

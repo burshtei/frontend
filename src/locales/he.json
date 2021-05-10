@@ -15,5 +15,6 @@
   "export_stock": "הוצאת סחורה",
   "amount": "כמות",
   "name": "שם",
-  "packages": "חבילות"
+  "packages": "חבילות",
+  "signed_out": "התנתק"
 }

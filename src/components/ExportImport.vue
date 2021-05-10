@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-main>
     <v-container class="ma-1">
       <v-card>
         <v-row justify="center" align-content="center">
@@ -87,7 +87,7 @@
         </v-row>
       </v-card>
     </v-container>
-  </div>
+  </v-main>
 </template>
 
 <script>
@@ -126,7 +126,7 @@ export default {
         .get(this.backendUrl + "/books/query?barCode=" + event)
         .then((value) => (this.action.book = value.data))
         .catch((reason) => {
-          (this.action.book = this.emptyBook);
+          this.action.book = this.emptyBook;
           console.log(reason);
         });
     },
