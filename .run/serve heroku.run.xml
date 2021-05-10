@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="serve heroku" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="serve" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="VUE_APP_BACKEND_API" value="https://kehat-backend.herokuapp.com" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
