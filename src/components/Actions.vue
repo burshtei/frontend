@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-    <v-container>
+  <v-container>
+    <v-container fluid>
       <v-card>
         <v-btn right small
           ><download-excel :data="actions" :fields="json_fields">
@@ -10,6 +10,7 @@
         >
       </v-card>
     </v-container>
+
     <v-data-table
       dense
       :headers="headers"
@@ -32,7 +33,7 @@
         <v-btn color="primary" @click="initialize"> Reset</v-btn>
       </template>
     </v-data-table>
-  </v-card>
+  </v-container>
 </template>
 <script>
 import Vue from "vue";
@@ -48,6 +49,7 @@ export default {
     backendUrl: process.env.VUE_APP_BACKEND_API,
     dialog: false,
     dialogDelete: false,
+    snackbar: true,
     headers: [
       { text: "תאריך", value: "date" },
       { text: "משתמש", value: "user" },

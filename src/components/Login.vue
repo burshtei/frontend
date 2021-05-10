@@ -65,8 +65,11 @@ export default {
               .get(this.backendUrl + "/profile", {
                 headers: axios.defaults.headers.common,
               })
-              .then((response) => localStorage.setItem("user", response.data));
-            router.push("/");
+              .then((response) => {
+                let user = response.data;
+                localStorage.setItem("user", JSON.stringify(user));
+                router.push("/");
+              });
           });
       } catch (err) {
         console.log(err);

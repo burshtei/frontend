@@ -107,7 +107,7 @@ export default {
     action: {
       amount: 0,
       barCode: "",
-      user: "בודק",
+      user: null,
       target: null,
       book: {
         name: "",
@@ -142,6 +142,8 @@ export default {
       }
       if (this.action.book.id != null) {
         this.action.book.amount += parseInt(this.action.amount);
+        let user = JSON.parse(localStorage.getItem("user"));
+        this.action.user = user.name;
         axios
           .post(this.backendUrl + "/actions", this.action)
           // .then((response)return => )
