@@ -5,7 +5,7 @@
         <v-btn right small
           ><download-excel :data="actions" :fields="json_fields">
             <v-icon>mdi-download</v-icon>
-            ייצוא
+            {{$t('export_to_excel')}}
           </download-excel></v-btn
         >
       </v-card>

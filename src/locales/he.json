@@ -16,5 +16,6 @@
   "amount": "כמות",
   "name": "שם",
   "packages": "חבילות",
-  "signed_out": "התנתק"
+  "signed_out": "התנתק",
+  "export_to_excel": "ייצוא"
 }
