@@ -17,5 +17,6 @@
   "name": "שם",
   "packages": "חבילות",
   "signed_out": "התנתק",
-  "export_to_excel": "ייצוא"
+  "export_to_excel": "ייצוא",
+  "new_item": "פריט חדש"
 }
