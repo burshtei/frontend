@@ -65,7 +65,7 @@ export default {
     headers: [
       { text: "תאריך", value: "date" },
       { text: "משתמש", value: "user" },
-      { text: "ברקdוד", value: "book.barCode" },
+      { text: "ברקוד", value: "book.barCode" },
       { text: "שם", value: "book.name" },
       { text: "כמות", value: "amount" },
       { text: "מטרה", value: "target" },
