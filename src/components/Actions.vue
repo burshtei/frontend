@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-container fluid>
+    <v-toolbar flat>
       <v-card>
         <v-btn right small
           ><download-excel :data="actions" :fields="json_fields">
@@ -9,14 +9,25 @@
           </download-excel></v-btn
         >
       </v-card>
-    </v-container>
-
+    </v-toolbar>
+    <v-toolbar flat>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+    </v-toolbar>
     <v-data-table
       dense
       :headers="headers"
       :items="actions"
       class="elevation-1"
       mobile-breakpoint="0"
+      :search="search"
     >
       <template v-slot:item.date="{ item }">
         {{ moment(item.date).format("DD/MM/YYYY") }}
@@ -46,6 +57,7 @@ import * as moment from "moment";
 
 export default {
   data: () => ({
+    search: "",
     backendUrl: process.env.VUE_APP_BACKEND_API,
     dialog: false,
     dialogDelete: false,
@@ -53,7 +65,7 @@ export default {
     headers: [
       { text: "תאריך", value: "date" },
       { text: "משתמש", value: "user" },
-      { text: "ברקוד", value: "book.barCode" },
+      { text: "ברקdוד", value: "book.barCode" },
       { text: "שם", value: "book.name" },
       { text: "כמות", value: "amount" },
       { text: "מטרה", value: "target" },
