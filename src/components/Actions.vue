@@ -5,7 +5,7 @@
         <v-btn right small
           ><download-excel :data="actions" :fields="json_fields">
             <v-icon>mdi-download</v-icon>
-            {{$t('export_to_excel')}}
+            {{ $t("export_to_excel") }}
           </download-excel></v-btn
         >
       </v-card>
@@ -57,6 +57,7 @@ export default {
       { text: "שם", value: "book.name" },
       { text: "כמות", value: "amount" },
       { text: "מטרה", value: "target" },
+      { text: "הערה", value: "comment" },
     ],
     all_actions: [],
     actions: [],
@@ -75,6 +76,7 @@ export default {
         callback: (value) => {
           if (value === "chish") return "חיש";
           if (value === "kehat") return "קהת";
+          if (value === "bentzi") return "בנצי";
         },
       },
     },

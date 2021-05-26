@@ -47,6 +47,14 @@
                         label="שם"
                       ></v-text-field>
                     </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="3">
+                      <v-text-field
+                        v-model="editedItem.section"
+                        label="עמודה"
+                      ></v-text-field>
+                    </v-col>
                     <v-col cols="2">
                       <v-text-field
                         v-model="editedItem.amount"
@@ -115,6 +123,7 @@ export default {
     headers: [
       { text: "בר קוד", value: "barCode" },
       { text: "שם / תיאור", value: "name" },
+      { text: "עמודה", value: "section", filterable: false },
       { text: "כמות", value: "amount", filterable: false },
       { text: "פעולות", value: "actions", sortable: false },
     ],

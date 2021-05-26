@@ -74,6 +74,13 @@
                         ></v-radio>
                       </v-radio-group>
                     </v-col>
+                    <v-col cols="12" sm="10">
+                      <v-text-field
+                        v-model="action.comment"
+                        :label="$t('comment')"
+                        required
+                      ></v-text-field>
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -98,7 +105,7 @@ export default {
     backendUrl: process.env.VUE_APP_BACKEND_API,
     isInsert: true,
     dialog: false,
-    targetEnum: ["kehat", "chish"],
+    targetEnum: ["kehat", "chish", "bentzi"],
     emptyBook: {
       name: "",
       id: null,

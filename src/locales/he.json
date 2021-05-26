@@ -9,6 +9,7 @@
   "inventory": "מחסן",
   "kehat": "קהת",
   "chish": "חיש",
+  "bentzi": "בנצי",
   "history": "היסטוריה",
   "actions": "פעולות",
   "insert_stock": "הכנסת סחורה",
@@ -18,5 +19,6 @@
   "packages": "חבילות",
   "signed_out": "התנתק",
   "export_to_excel": "ייצוא",
-  "new_item": "פריט חדש"
+  "new_item": "פריט חדש",
+  "comment": "הערה"
 }
