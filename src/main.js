@@ -5,7 +5,14 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import i18n from "@/plugins/i18n"; // path to vuetify export
 import "material-design-icons-iconfont/dist/material-design-icons.css";
+import Axios from "axios";
 
+Vue.prototype.$http = Axios;
+const token = localStorage.getItem("token");
+if (token) {
+  Vue.prototype.$http.defaults.headers.common["Authorization"] =
+    "bearer " + token;
+}
 Vue.config.productionTip = false;
 
 new Vue({
