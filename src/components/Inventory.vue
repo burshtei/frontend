@@ -41,7 +41,7 @@
                         label="בר קוד"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="5">
                       <v-text-field
                         v-model="editedItem.name"
                         label="שם"
