@@ -17,7 +17,7 @@
           width="70"
         />
       </div>
-      <span class="mr-2">המחסן של קה"ת - בראשות הרב מנחם בכר</span>
+      <span class="mr-2">{{ $t("inventory_title") }}</span>
       <v-spacer></v-spacer>
       <v-btn color="grey" @click="singedOut">
         {{ $t("signed_out") }}
