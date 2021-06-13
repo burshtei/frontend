@@ -35,8 +35,11 @@
               </v-row>
             </template>
             <v-card>
-              <v-card-title class="headline">
+              <v-card-title v-if="isInsert === true" class="headline">
                 {{ $t("insert_stock") }}
+              </v-card-title>
+              <v-card-title v-else class="headline">
+                {{ $t("export_stock") }}
               </v-card-title>
               <v-card-text>
                 <v-container>
