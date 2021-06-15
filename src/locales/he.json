@@ -21,5 +21,14 @@
   "signed_out": "התנתק",
   "export_to_excel": "ייצוא",
   "new_item": "פריט חדש",
-  "comment": "הערה"
+  "comment": "הערה",
+  "deleted_item_successfully": "פריט נמחק בהצלחה",
+  "deleted_item_failed": "שגיאה במחיקת פריט",
+  "update_item_success": "פריט עודכן בהצלחה",
+  "update_item_failed": "שגיאה בעדכון פריט",
+  "add_item_success": "פריט נוסף בהצלחה",
+  "add_item_failed": "שגיאה בהוספת פריט",
+  "confirm_item_delete": "האם אתה בטוח למחוק את הפריט וכל ההיסטוריה שלו ?",
+  "action_saved_success": "הפעולה נשמרה בהצלחה",
+  "action_saved_failed": "שגיאה בשמירת הפעולה"
 }

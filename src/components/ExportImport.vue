@@ -1,5 +1,13 @@
 <template>
   <v-main>
+    <v-snackbar
+      v-model="snackbar.show"
+      :timeout="4000"
+      top
+      :color="snackbar.color"
+    >
+      <span>{{ snackbar.msg }}</span>
+    </v-snackbar>
     <v-container class="ma-1">
       <v-card>
         <v-row justify="center" align-content="center">
@@ -105,6 +113,11 @@ import axios from "axios";
 
 export default {
   data: () => ({
+    snackbar: {
+      show: false,
+      msg: "",
+      color: "",
+    },
     backendUrl: process.env.VUE_APP_BACKEND_API,
     isInsert: true,
     dialog: false,
@@ -156,10 +169,22 @@ export default {
         this.action.user = user.name;
         axios
           .post(this.backendUrl + "/actions", this.action)
-          // .then((response)return => )
-          .catch((reason) => console.log(reason));
+            .then(() => {
+              this.displaySnackbar(this.$t("action_saved_success"), "success")
+              this.close()
+        })
+          .catch((reason) => {
+            console.log(reason)
+            this.displaySnackbar(this.$t("action_saved_failed"), "error")
+          });
       }
-      this.close();
+    },
+    displaySnackbar(msg, color) {
+      this.snackbar = {
+        show: true,
+        msg: msg,
+        color: color,
+      };
     },
   },
 };

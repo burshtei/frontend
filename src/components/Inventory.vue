@@ -1,5 +1,13 @@
 <template>
   <v-card>
+    <v-snackbar
+      v-model="snackbar.show"
+      :timeout="4000"
+      top
+      :color="snackbar.color"
+    >
+      <span>{{ snackbar.msg }}</span>
+    </v-snackbar>
     <v-data-table
       dense
       :headers="headers"
@@ -78,14 +86,14 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDelete" max-width="600px">
             <v-card>
               <v-card-title class="headline"
-                >Are you sure you want to delete this item?
+                >{{ $t("confirm_item_delete") }}
               </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="blue darken-1" text @click="close()"
                   >Cancel
                 </v-btn>
                 <v-btn color="blue darken-1" text @click="deleteItemConfirm"
@@ -116,6 +124,11 @@ import router from "@/router";
 
 export default {
   data: () => ({
+    snackbar: {
+      show: false,
+      msg: "",
+      color: "",
+    },
     search: "",
     backendUrl: process.env.VUE_APP_BACKEND_API,
     dialog: false,
@@ -183,14 +196,13 @@ export default {
     },
 
     deleteItemConfirm() {
-      console.log("deleteItemConfirm: " + this.editedItem.id);
       this.items.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
     close() {
+      this.dialogDelete = false;
       this.dialog = false;
-      console.log("close: " + this.editedItem.id);
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -198,16 +210,25 @@ export default {
     },
 
     closeDelete() {
-      this.dialogDelete = false;
       console.log(
         "closeDelete: " + this.backendUrl + "/books/" + this.editedItem.id
       );
       this.$nextTick(() => {
         axios
           .delete(this.backendUrl + "/books/" + this.editedItem.id)
-          .then((this.editedItem = Object.assign({}, this.defaultItem)))
-          .then((this.editedIndex = -1))
-          .catch((reason) => console.log(reason));
+          .then(() => {
+            this.editedItem = Object.assign({}, this.defaultItem);
+            this.editedIndex = -1;
+            this.dialogDelete = false;
+            this.displaySnackbar(
+              this.$t("deleted_item_successfully"),
+              "success"
+            );
+          })
+          .catch((reason) => {
+            console.log(reason);
+            this.displaySnackbar(this.$t("deleted_item_failed"), "error");
+          });
       });
     },
 
@@ -218,16 +239,28 @@ export default {
             this.backendUrl + "/books/" + this.editedItem.id,
             this.editedItem
           )
-          // .then((response)return => )
-          .catch((reason) => console.log(reason));
-        Object.assign(this.items[this.editedIndex], this.editedItem);
+          .then(() => {
+            Object.assign(this.items[this.editedIndex], this.editedItem);
+            this.displaySnackbar(this.$t("update_item_success"), "success");
+            this.close();
+          })
+          .catch((reason) => {
+            console.log(reason);
+            this.displaySnackbar(this.$t("update_item_failed"), "error");
+          });
       } else {
         axios
           .post(this.backendUrl + "/books", this.editedItem)
-          .then((response) => this.items.push(response.data))
-          .catch((reason) => console.log(reason));
+          .then((response) => {
+            this.items.push(response.data);
+            this.displaySnackbar(this.$t("add_item_success"), "success");
+            this.close();
+          })
+          .catch((reason) => {
+            console.log(reason);
+            this.displaySnackbar(this.$t("add_item_failed"), "error");
+          });
       }
-      this.close();
     },
     displayByPackage: function (book) {
       let retValue = book.amount;
@@ -250,6 +283,14 @@ export default {
         retValue += " = " + book.amount;
       }
       return retValue;
+    },
+
+    displaySnackbar(msg, color) {
+      this.snackbar = {
+        show: true,
+        msg: msg,
+        color: color,
+      };
     },
   },
 };
