@@ -11,6 +11,7 @@
     <v-container class="ma-1">
       <v-card>
         <v-row justify="center" align-content="center">
+          <!-- import / export dialog-->
           <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
               <v-row>
@@ -51,6 +52,16 @@
               </v-card-title>
               <v-card-text>
                 <v-container>
+                  <v-row
+                    ><v-col>
+                      <v-btn
+                        outlined="outlined"
+                        small
+                        @click="openInventoryDialog()"
+                        ><v-icon>search</v-icon></v-btn
+                      >
+                    </v-col>
+                  </v-row>
                   <v-row>
                     <v-col cols="12" sm="2" md="4">
                       <v-text-field
@@ -102,6 +113,38 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <!--  inside dialog to select book from inventory-->
+          <v-dialog
+            v-model="inventoryDialog"
+            max-width="600px"
+            @click:outside="dialog = true"
+          >
+            <v-data-table
+              dense
+              :headers="headers"
+              :items="items"
+              sort-by="barCode"
+              class="elevation-1"
+              :search="search"
+              @click:row="handleRowClick"
+            >
+              <template v-slot:top>
+                <v-toolbar flat>
+                  <v-toolbar-title>{{ $t("items") }}</v-toolbar-title>
+                  <v-divider class="mx-4" inset vertical></v-divider>
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    hide-details
+                  ></v-text-field>
+                  <v-spacer></v-spacer>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+              </template>
+            </v-data-table>
+          </v-dialog>
         </v-row>
       </v-card>
     </v-container>
@@ -110,6 +153,7 @@
 
 <script>
 import axios from "axios";
+import router from "@/router";
 
 export default {
   data: () => ({
@@ -118,9 +162,17 @@ export default {
       msg: "",
       color: "",
     },
+    headers: [
+      { text: "בר קוד", value: "barCode" },
+      { text: "שם / תיאור", value: "name" },
+      { text: "עמודה", value: "section", filterable: false },
+    ],
+    items: [],
+    search: "",
     backendUrl: process.env.VUE_APP_BACKEND_API,
     isInsert: true,
     dialog: false,
+    inventoryDialog: false,
     targetEnum: ["kehat", "chish", "bentzi"],
     emptyBook: {
       name: "",
@@ -169,13 +221,13 @@ export default {
         this.action.user = user.name;
         axios
           .post(this.backendUrl + "/actions", this.action)
-            .then(() => {
-              this.displaySnackbar(this.$t("action_saved_success"), "success")
-              this.close()
-        })
+          .then(() => {
+            this.displaySnackbar(this.$t("action_saved_success"), "success");
+            this.close();
+          })
           .catch((reason) => {
-            console.log(reason)
-            this.displaySnackbar(this.$t("action_saved_failed"), "error")
+            console.log(reason);
+            this.displaySnackbar(this.$t("action_saved_failed"), "error");
           });
       }
     },
@@ -185,6 +237,25 @@ export default {
         msg: msg,
         color: color,
       };
+    },
+    openInventoryDialog() {
+      this.inventoryDialog = true;
+      this.dialog = false;
+      axios
+        .get(this.backendUrl + "/books")
+        .then((response) => (this.items = response.data))
+        .catch((reason) => {
+          console.log(reason);
+          if (reason.response.status === 401) {
+            router.push("/login");
+          }
+        });
+    },
+    handleRowClick(row) {
+      this.inventoryDialog = false;
+      this.dialog = true;
+      this.action.barCode = row.barCode;
+      this.barCodeUpdated(row.barCode);
     },
   },
 };
