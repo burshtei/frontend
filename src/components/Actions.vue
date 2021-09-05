@@ -20,6 +20,21 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
+      <v-dialog v-model="dialogDelete" max-width="600px">
+        <v-card>
+          <v-card-title class="headline"
+            >{{ $t("confirm_action_delete") }}
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close()">Cancel </v-btn>
+            <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              >OK
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-toolbar>
     <v-data-table
       dense
@@ -39,6 +54,12 @@
       </template>
       <template v-slot:item.target="{ item }">
         {{ targetDisplay(item.target) }}
+      </template>
+      <template v-slot:item.target="{ item }">
+        {{ targetDisplay(item.target) }}
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon small @click="deleteItem(item)"> mdi-delete</v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset</v-btn>
@@ -60,7 +81,7 @@ export default {
     search: "",
     backendUrl: process.env.VUE_APP_BACKEND_API,
     dialog: false,
-    dialogDelete: false,
+    dialogDelete: true,
     snackbar: true,
     headers: [
       { text: "תאריך", value: "date" },
@@ -70,6 +91,7 @@ export default {
       { text: "כמות", value: "amount" },
       { text: "מטרה", value: "target" },
       { text: "הערה", value: "comment" },
+      { text: "פעולות", value: "actions", sortable: false },
     ],
     all_actions: [],
     actions: [],
@@ -119,6 +141,41 @@ export default {
     targetDisplay: function (target) {
       return this.$t(target);
     },
+
+    deleteItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    deleteItemConfirm() {
+      this.items.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    closeDelete() {
+      console.log(
+        "closeDelete: " + this.backendUrl + "/actions/" + this.editedItem.id
+      );
+      this.$nextTick(() => {
+        axios
+          .delete(this.backendUrl + "/actions/" + this.editedItem.id)
+          .then(() => {
+            this.editedItem = Object.assign({}, this.defaultItem);
+            this.editedIndex = -1;
+            this.dialogDelete = false;
+            this.displaySnackbar(
+              this.$t("deleted_item_successfully"),
+              "success"
+            );
+          })
+          .catch((reason) => {
+            console.log(reason);
+            this.displaySnackbar(this.$t("deleted_item_failed"), "error");
+          });
+      });
+    },
+
     close() {
       this.dialog = false;
       this.$nextTick(() => {
