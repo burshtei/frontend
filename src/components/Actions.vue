@@ -194,7 +194,7 @@ export default {
     close() {
       this.dialogDelete = false;
       this.$nextTick(() => {
-        this.toDeleteItem = Object.assign({}, this.defaultItem);
+        this.toDeleteItem = Object.assign({}, null);
         this.toDeleteItem = -1;
       });
     },
