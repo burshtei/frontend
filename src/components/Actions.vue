@@ -157,8 +157,8 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.actions.splice(this.toDeleteIndex, 1);
       this.closeDelete();
+      this.actions.splice(this.toDeleteIndex, 1);
     },
 
     closeDelete() {
