@@ -1,5 +1,13 @@
 <template>
   <v-container>
+    <v-snackbar
+      v-model="snackbar.show"
+      :timeout="4000"
+      top
+      :color="snackbar.color"
+    >
+      <span>{{ snackbar.msg }}</span>
+    </v-snackbar>
     <v-toolbar flat>
       <v-card>
         <v-btn right small
@@ -81,7 +89,7 @@ export default {
     search: "",
     backendUrl: process.env.VUE_APP_BACKEND_API,
     dialog: false,
-    dialogDelete: true,
+    dialogDelete: false,
     snackbar: true,
     headers: [
       { text: "תאריך", value: "date" },
@@ -143,49 +151,63 @@ export default {
     },
 
     deleteItem(item) {
-      this.editedIndex = this.items.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.toDeleteIndex = this.actions.indexOf(item);
+      this.toDeleteItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1);
+      this.actions.splice(this.toDeleteIndex, 1);
       this.closeDelete();
     },
 
     closeDelete() {
-      console.log(
-        "closeDelete: " + this.backendUrl + "/actions/" + this.editedItem.id
-      );
       this.$nextTick(() => {
+        let book = this.toDeleteItem.book;
+        // Revert the amount of the book, than delete action, and update the book info
+
+        book.amount -= this.toDeleteItem.amount;
         axios
-          .delete(this.backendUrl + "/actions/" + this.editedItem.id)
+          .delete(this.backendUrl + "/actions/" + this.toDeleteItem.id)
+          .then(
+            axios.put(
+              this.backendUrl + "/books/" + this.toDeleteItem.book.id,
+              book
+            )
+          )
           .then(() => {
-            this.editedItem = Object.assign({}, this.defaultItem);
-            this.editedIndex = -1;
+            this.toDeleteItem = Object.assign({}, this.defaultItem);
+            this.toDeleteIndex = -1;
             this.dialogDelete = false;
             this.displaySnackbar(
-              this.$t("deleted_item_successfully"),
+              this.$t("deleted_action_successfully"),
               "success"
             );
           })
           .catch((reason) => {
             console.log(reason);
-            this.displaySnackbar(this.$t("deleted_item_failed"), "error");
+            this.displaySnackbar(this.$t("deleted_action_failed"), "error");
           });
       });
     },
 
     close() {
-      this.dialog = false;
+      this.dialogDelete = false;
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
+        this.toDeleteItem = Object.assign({}, this.defaultItem);
+        this.toDeleteItem = -1;
       });
     },
     getColor(amount) {
       if (amount > 0) return "green";
       else return "red";
+    },
+    displaySnackbar(msg, color) {
+      this.snackbar = {
+        show: true,
+        msg: msg,
+        color: color,
+      };
     },
   },
 };
