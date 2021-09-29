@@ -29,6 +29,9 @@
   "add_item_success": "פריט נוסף בהצלחה",
   "add_item_failed": "שגיאה בהוספת פריט",
   "confirm_item_delete": "האם אתה בטוח למחוק את הפריט וכל ההיסטוריה שלו ?",
+  "confirm_action_delete": "האם אתה בטוח לבטל את הפעולה ?",
   "action_saved_success": "הפעולה נשמרה בהצלחה",
-  "action_saved_failed": "שגיאה בשמירת הפעולה"
+  "action_saved_failed": "שגיאה בשמירת הפעולה",
+  "deleted_action_successfully": "הפעולה נמחקה בהצלחה, הכמות התעדכנה בהתאם",
+  "deleted_action_failed": "שגיאה במחיקת הפעולה"
 }
