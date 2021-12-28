@@ -120,6 +120,7 @@ export default {
           if (value === "kehat") return "קהת";
           if (value === "bentzi") return "בנצי";
         },
+        הערה: "comment",
       },
     },
   }),
